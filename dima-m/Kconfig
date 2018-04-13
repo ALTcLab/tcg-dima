@@ -1,0 +1,13 @@
+config DIMA
+	bool "Dynamic Integrity Measurement Architecture(DIMA)"
+	depends on SECURITY
+	select CRYPTO_HMAC
+	select CRYPTO_MD5
+	select CRYPTO_SHA1
+	default n
+	help
+	  The Trusted Computing Group(TCG) runtime Dynamic Integrity
+	  Measurement Architecture(DIMA) maintains a list of hash
+	  values of executables,as they are executed.
+
+	  If you are unsure how to answer this question, answer N.

@@ -1,0 +1,5 @@
+#include "subcommand.h"
+
+const char *dimad_git_commit = "@@DIMAD_GIT_COMMIT@@";
+const char *dimad_build_machine = "@@DIMAD_BUILD_MACHINE@@";
+const char *dimad_build_conf_digest = "@@DIMAD_CONF_DIGEST@@";

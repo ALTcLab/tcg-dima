@@ -1,0 +1,13 @@
+[Unit]
+Description=Dima deamon
+After=secmount-xdja-home.service
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/dima.pid
+ExecStart=/usr/sbin/xdja/dima/dima-d dimad -F -T 30
+StandardOutput=syslog
+User=root
