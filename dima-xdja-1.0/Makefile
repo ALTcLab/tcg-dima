@@ -40,7 +40,6 @@ $(BIN_NAME): $(OBJS_$(BIN_NAME))
 	$(CC) $^ -o $@ $(CFLAGS) /usr/lib64/libimaevm.so
 
 build_info.c: build_info.c.in
-	sed -e "s~@@DIMAD_GIT_COMMIT@@~$(shell if [ -d $(TOPDIR)/.git ]; then git log -1 --pretty=format:%H | tr -d '\n'; elif [ -f $(TOPDIR)/commit ]; then cat $(TOPDIR)/commit | tr -d '\n'; else echo -n ???????; fi)~" \
-	      -e "s~@@DIMAD_BUILD_MACHINE@@~$(shell bash -c 'whoami | tr -d "\n"; echo -n @; uname=`uname -a`; echo -n $${uname//\~/_} | tr -d "\n"')~" \
-		  -e "s~@@DIMAD_CONF_DIGEST@@~$(shell evmctl ima_hash dima.conf -n)~" \
-	    < $< > $@
+	sed  -e "s~@@DIMAD_BUILD_MACHINE@@~$(shell bash -c 'whoami | tr -d "\n"; echo -n @; uname=`uname -a`; echo -n $${uname//\~/_} | tr -d "\n"')~" \
+		   -e "s~@@DIMAD_CONF_DIGEST@@~$(shell evmctl ima_hash dima.conf -n)~" \
+	       < $< > $@
