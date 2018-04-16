@@ -126,7 +126,7 @@ read_conf_value()
         char *p = strtrim(name);
         int len = strlen(p);
         int max_len = mode == DIMA_MODE_MODULE?MODULE_NAME_LEN:DIMA_NAME_LEN;
-        if(len <= 0 || len > max_len){
+        if(len <= 0 || len >= max_len){
             continue ;
         }
 
@@ -175,7 +175,7 @@ parse_arg(int opt, char *optarg)
 
             char *p = strtrim(optarg);
             int len = strlen(p);
-            if(len <= 0 || len > DIMA_NAME_LEN){
+            if(len <= 0 || len >= DIMA_NAME_LEN){
                 break;
             }
 
@@ -207,7 +207,7 @@ parse_arg(int opt, char *optarg)
 
             char *p = strtrim(optarg);
             int len = strlen(p);
-            if(len <= 0 || len > MODULE_NAME_LEN){
+            if(len <= 0 || len >= MODULE_NAME_LEN){
                 break;
             }
 
