@@ -56,9 +56,9 @@ static long dima_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		}
 		case DIMA_MEASUREMENT_PROCESS_CMD:
 		{
+			int pid;
 			if(dima_lock) break;
 
-			int pid;
 			if (copy_from_user(&pid, argp, sizeof(pid))) {
 				ret = -EFAULT;
 				break;
@@ -68,9 +68,9 @@ static long dima_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		}
 		case DIMA_MEASUREMENT_MODULE_CMD:
 		{
-			if(dima_lock) break;
-
 			char name[MODULE_NAME_LEN];
+			if(dima_lock) break;
+			
 			if (copy_from_user(name, argp, sizeof(name))) {
 				ret = -EFAULT;
 				break;
