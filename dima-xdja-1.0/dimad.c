@@ -499,9 +499,10 @@ run_dimad(char *prog)
         info("Measurement count=%d \n",count++);
 
         ioctl(fd,DIMA_SET_MEASUREMENT_UNLOCK_MODE_CMD);
-        if((err = dyn_measurement_process(fd)))
-            break;
+        err = dyn_measurement_process(fd);
         ioctl(fd,DIMA_SET_MEASUREMENT_LOCK_MODE_CMD);
+
+        if(err) break;
 
         sleep(opt_sleep_time);
     }while(1);
