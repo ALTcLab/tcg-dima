@@ -14,6 +14,8 @@
 #define DIMA_SET_MEASUREMENT_MODE_CMD _IOW('d', 1, int)
 #define DIMA_MEASUREMENT_PROCESS_CMD    _IOW('d', 2, int)
 #define DIMA_MEASUREMENT_MODULE_CMD	   _IOW('d', 3, char[MODULE_NAME_LEN])
+#define DIMA_SET_MEASUREMENT_LOCK_MODE_CMD        _IO('d', 4)
+#define DIMA_SET_MEASUREMENT_UNLOCK_MODE_CMD    _IO('d', 5)
 
 #define DIMA_MODE_PROCESS 1
 #define DIMA_MODE_MODULE 2
@@ -496,8 +498,10 @@ run_dimad(char *prog)
         info("----------------- \n");
         info("Measurement count=%d \n",count++);
 
+        ioctl(fd,DIMA_SET_MEASUREMENT_UNLOCK_MODE_CMD);
         if((err = dyn_measurement_process(fd)))
             break;
+        ioctl(fd,DIMA_SET_MEASUREMENT_LOCK_MODE_CMD);
 
         sleep(opt_sleep_time);
     }while(1);

@@ -21,6 +21,7 @@ static int __init hash_setup(char *str)
 __setup("dima_hash=", hash_setup);
 
 static struct mutex		dima_mutex;
+static int dima_lock = 1; 
 
 int dima_used_chip = 0;
 
@@ -55,6 +56,8 @@ static long dima_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		}
 		case DIMA_MEASUREMENT_PROCESS_CMD:
 		{
+			if(dima_lock) break;
+
 			int pid;
 			if (copy_from_user(&pid, argp, sizeof(pid))) {
 				ret = -EFAULT;
@@ -65,6 +68,8 @@ static long dima_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		}
 		case DIMA_MEASUREMENT_MODULE_CMD:
 		{
+			if(dima_lock) break;
+
 			char name[MODULE_NAME_LEN];
 			if (copy_from_user(name, argp, sizeof(name))) {
 				ret = -EFAULT;
@@ -73,6 +78,17 @@ static long dima_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 			ret = dima_measurement_module_cmd(name);
 			break;
 		}
+		case DIMA_SET_MEASUREMENT_LOCK_MODE_CMD:
+		{
+			dima_lock = 1;
+			break;
+		}
+		case DIMA_SET_MEASUREMENT_UNLOCK_MODE_CMD:
+		{
+			dima_lock = 0;
+			break;
+		}
+
 	}
 
 	mutex_unlock(&dima_mutex);
