@@ -242,8 +242,8 @@ parse_arg(int opt, char *optarg)
             break;
         case 'T':
             opt_sleep_time = atoi(optarg);
-            if (opt_sleep_time <= 0){
-                err("Unrecognized value\n");
+            if (opt_sleep_time <= 30){
+                err("Unrecognized value need v > 30 .\n");
                 return -1;
             }
             break;
@@ -264,7 +264,7 @@ find_pid_by_name( char* comm)
 
     dir = opendir("/proc");
     if (!dir){
-        err("Cannot open /proc");
+        err("Cannot open /proc \n");
         return NULL;
     }
 
