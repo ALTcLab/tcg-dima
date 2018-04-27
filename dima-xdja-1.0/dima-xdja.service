@@ -8,6 +8,6 @@ WantedBy=multi-user.target
 [Service]
 Type=forking
 PIDFile=/var/run/dima.pid
-ExecStart=/usr/sbin/xdja/dima/dima-d dimad -F -T 30
+ExecStart=/usr/sbin/xdja/dima/dima-d dimad -F
 StandardOutput=syslog
 User=root
