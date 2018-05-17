@@ -257,49 +257,20 @@ parse_arg(int opt, char *optarg)
 static long* 
 find_pid_by_name( char* comm)
 {
-    DIR *dir;
-    struct dirent *next;
     long* pidList=NULL;
     int i=0;
 
-    dir = opendir("/proc");
-    if (!dir){
-        err("Cannot open /proc \n");
-        return NULL;
-    }
-
-    while ((next = readdir(dir)) != NULL) {
-        FILE *status;
-        char filename[READ_BUF_SIZE];
-        char buffer[READ_BUF_SIZE];
-        char name[READ_BUF_SIZE];
-
-        /* Must skip ".." since that is outside /proc */
-        if (strcmp(next->d_name, "..") == 0)
-            continue;
-
-        /* If it isn't a number, we don't want it */
-        if (!isdigit(*next->d_name))
-            continue;
-
-        sprintf(filename, "/proc/%s/status", next->d_name);
-        if (! (status = fopen(filename, "r")) ) {
-            continue;
-        }
-        if (fgets(buffer, READ_BUF_SIZE-1, status) == NULL) {
-            fclose(status);
-            continue;
-        }
-        fclose(status);
-
-        /* Buffer should contain a string like "Name:   binary_name" */
-        sscanf(buffer, "%*s %s", name);
-        if (strcmp(strtrim(name), comm) == 0) {
-            //info("%s %s %s\n",buffer,strtrim(name),next->d_name);
+    char cmd[READ_BUF_SIZE];
+    sprintf(cmd, "pgrep -f %s", comm);
+    FILE* fp =popen(cmd,"r");
+    if(fp){
+        char buffer[READ_BUF_SIZE] = {0};
+        while(NULL != fgets(buffer, READ_BUF_SIZE, fp)){
             pidList=realloc( pidList, sizeof(long) * (i+2));
-            pidList[i++]=strtol(next->d_name, NULL, 0);
+            pidList[i++]=strtol(buffer, NULL, 0);
         }
-    }
+        pclose(fp);
+    } 
 
     if (pidList) {
         pidList[i]=0;

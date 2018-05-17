@@ -1,6 +1,6 @@
 [Unit]
 Description=Dima deamon
-After=secmount-xdja-home.service
+After=tpm2-abrmd.service
 
 [Install]
 WantedBy=multi-user.target
